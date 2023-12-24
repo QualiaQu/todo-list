@@ -13,6 +13,15 @@ const Backdrop = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const SaveButton = styled.button`
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 20px;
+  padding: 5px 10px;
+`;
 
 const Content = styled.div`
   padding: 20px 30px;
@@ -51,7 +60,7 @@ const SaveTask = (props) => {
         <Backdrop onClick={props.close}>
             <Content onClick={contentComponentClickHandle}>
                 <input type="text" value={taskText} onChange={handleTaskTextChange} placeholder="Введите текст задачи" />
-                <button onClick={handleSaveTask}>Сохранить задачу</button>
+                <SaveButton onClick={handleSaveTask}>Сохранить задачу</SaveButton>
             </Content>
         </Backdrop>
     )

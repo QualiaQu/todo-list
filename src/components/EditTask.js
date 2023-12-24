@@ -30,16 +30,6 @@ const SaveButton = styled.button`
   margin-left: 20px;
 `;
 
-const DeleteButton = styled.button`
-  background-color: #ff5252;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: block;
-  margin: 20px auto 10px; /* Центрируем кнопку Удалить и увеличиваем отступ снизу */
-`;
-
 const EditTask = (props) => {
     const queryClient = useQueryClient();
     const [editedText, setEditedText] = useState('');

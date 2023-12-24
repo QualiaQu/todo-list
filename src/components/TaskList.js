@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import EditTask from './EditTask';
-import DeleteTask from "./DeleteTask";
-
+import DeleteTask from './DeleteTask';
 
 const Container = styled.div`
   display: flex;
@@ -20,8 +19,8 @@ const TaskItem = styled.li`
 `;
 
 const TaskText = styled.span`
-  flex-grow: 1; /* Растягиваем текст задачи на всю доступную ширину */
-  margin-right: 8px; /* Добавляем небольшой отступ справа для разделения от чекбокса */
+  flex-grow: 1;
+  margin-right: 8px;
   text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
 `;
 
@@ -30,7 +29,7 @@ const Checkbox = styled.input`
 `;
 
 const EditButton = styled.button`
-  background-color: #4caf50; 
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -45,6 +44,11 @@ const DeleteButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   margin-left: 10px;
+`;
+
+const SearchInput = styled.input`
+  margin-bottom: 20px;
+  padding: 8px;
 `;
 
 const fetchTasks = async () => {
@@ -64,12 +68,14 @@ export const TaskList = () => {
     const queryClient = useQueryClient();
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-    const [currentTaskId, setCurrentTaskId] = useState(null); // Добавляем состояние для taskId
+    const [currentTaskId, setCurrentTaskId] = useState(null);
+    const [searchValue, setSearchValue] = useState('');
 
     const editTaskButtonClick = (taskId) => {
-        setIsEditModalVisible(true)
+        setIsEditModalVisible(true);
         setCurrentTaskId(taskId);
     };
+
     const deleteTaskButtonClick = (taskId) => {
         setIsDeleteModalVisible(true);
         setCurrentTaskId(taskId);
@@ -77,27 +83,25 @@ export const TaskList = () => {
 
     const closeEditAlert = () => {
         setIsEditModalVisible(false);
-    }
+    };
+
     const closeDeleteAlert = () => {
         setIsDeleteModalVisible(false);
-    }
+    };
 
     const renderEditModal = () => {
         if (!isEditModalVisible) {
             return null;
         }
-        return (
-            <EditTask close={closeEditAlert} taskId={currentTaskId}/>
-        );
-    }
+        return <EditTask close={closeEditAlert} taskId={currentTaskId} />;
+    };
+
     const renderDeleteModal = () => {
         if (!isDeleteModalVisible) {
             return null;
         }
-        return (
-            <DeleteTask close={closeDeleteAlert} taskId={currentTaskId}/>
-        );
-    }
+        return <DeleteTask close={closeDeleteAlert} taskId={currentTaskId} />;
+    };
 
     const { data: tasks, isLoading, isError } = useQuery('tasks', fetchTasks);
 
@@ -110,6 +114,17 @@ export const TaskList = () => {
     const handleCheckboxChange = (taskId, completed) => {
         mutationUpdate.mutate({ taskId, completed: !completed });
     };
+
+    const handleSearchInputChange = (event) => {
+        setSearchValue(event.target.value);
+    };
+
+    const filteredTasks = tasks
+        ? tasks.filter((task) =>
+            task.text.toLowerCase().includes(searchValue.toLowerCase())
+        )
+        : [];
+
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -125,8 +140,14 @@ export const TaskList = () => {
             {renderDeleteModal()}
             <Container>
                 <h2>Список задач</h2>
+                <SearchInput
+                    type="text"
+                    value={searchValue}
+                    onChange={handleSearchInputChange}
+                    placeholder="Поиск задач..."
+                />
                 <ul>
-                    {tasks.map((task) => (
+                    {filteredTasks.map((task) => (
                         <TaskItem key={task.id}>
                             <TaskText completed={task.completed}>{task.text}</TaskText>
                             <Checkbox
@@ -134,8 +155,12 @@ export const TaskList = () => {
                                 checked={task.completed}
                                 onChange={() => handleCheckboxChange(task.id, task.completed)}
                             />
-                            <EditButton onClick={() => editTaskButtonClick(task.id)}>Редактировать</EditButton>
-                            <DeleteButton onClick={() => deleteTaskButtonClick(task.id)}>Удалить</DeleteButton>
+                            <EditButton onClick={() => editTaskButtonClick(task.id)}>
+                                Редактировать
+                            </EditButton>
+                            <DeleteButton onClick={() => deleteTaskButtonClick(task.id)}>
+                                Удалить
+                            </DeleteButton>
                         </TaskItem>
                     ))}
                 </ul>

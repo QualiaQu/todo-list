@@ -1,4 +1,4 @@
-import {AddTaskButton} from './components/AddTaskButton'
+import {AddTask} from './components/AddTask'
 import {QueryClient, QueryClientProvider} from "react-query";
 import {TaskList} from "./components/TaskList";
 
@@ -8,7 +8,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <div>
-                <AddTaskButton/>
+                <AddTask/>
                 <TaskList/>
             </div>
         </QueryClientProvider>

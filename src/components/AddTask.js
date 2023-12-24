@@ -18,7 +18,7 @@ const AddTaskButton = styled.button`
   cursor: pointer;
 `;
 
-export const AddTaskButton = () => {
+export const AddTask = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const addTaskButtonClick = () => {
         setIsModalVisible(true)

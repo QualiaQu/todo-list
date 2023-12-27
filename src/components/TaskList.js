@@ -103,7 +103,7 @@ export const TaskList = () => {
         return <DeleteTask close={closeDeleteAlert} taskId={currentTaskId} />;
     };
 
-    const { data: tasks, isLoading, isError } = useQuery('tasks', fetchTasks);
+    const { data: tasks } = useQuery('tasks', fetchTasks);
 
     const mutationUpdate = useMutation(updateTaskStatus, {
         onSuccess: (data) => {
@@ -126,13 +126,6 @@ export const TaskList = () => {
         : [];
 
 
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-
-    if (isError) {
-        return <p>Error loading tasks</p>;
-    }
 
     return (
         <>

@@ -37,7 +37,6 @@ const EditTask = (props) => {
         event.stopPropagation();
     };
 
-    // Загружаем текст выбранной задачи в инпут при монтировании компонента
     useEffect(() => {
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
         const selectedTask = tasks.find((task) => task.id === props.taskId);

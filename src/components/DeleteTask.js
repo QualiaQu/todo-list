@@ -38,12 +38,6 @@ const EditTask = (props) => {
         event.stopPropagation();
     };
 
-    // Загружаем текст выбранной задачи в инпут при монтировании компонента
-    useEffect(() => {
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        tasks.find((task) => task.id === props.taskId);
-    }, [props.taskId]);
-
 
     const mutationDelete = useMutation(async (taskId) => {
         const existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
